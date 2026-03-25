@@ -6,7 +6,8 @@ import { useEffect, useRef } from "react";
 const LEAF_COUNT_DESKTOP = 60;
 const LEAF_COUNT_MOBILE = 20;
 const CURSOR_RADIUS = 280;
-const CURSOR_FORCE = 0.12;
+const PULL_FORCE = 0.12;
+const PUSH_FORCE = 0.02; // Reduced from 0.08 for a more subtle effect
 
 interface Leaf {
   x: number;
@@ -120,6 +121,8 @@ function drawTree(ctx: CanvasRenderingContext2D, w: number, h: number, isMobile:
 export function ParticleCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mouseRef = useRef({ x: -100, y: -100 });
+  const lastMouseRef = useRef({ x: -100, y: -100 });
+  const mouseVelocity = useRef(0);
   const animRef = useRef<number>(0);
   const treeCanvas = useRef<HTMLCanvasElement | null>(null);
 
@@ -163,14 +166,27 @@ export function ParticleCanvas() {
     }
 
     const handleMouse = (e: MouseEvent) => {
+      const dx = e.clientX - lastMouseRef.current.x;
+      const dy = e.clientY - lastMouseRef.current.y;
+      mouseVelocity.current = Math.min(Math.sqrt(dx * dx + dy * dy), 50);
+      
+      lastMouseRef.current.x = e.clientX;
+      lastMouseRef.current.y = e.clientY;
       mouseRef.current.x = e.clientX;
       mouseRef.current.y = e.clientY;
     };
 
     const handleTouch = (e: TouchEvent) => {
       if (e.touches.length > 0) {
-        mouseRef.current.x = e.touches[0].clientX;
-        mouseRef.current.y = e.touches[0].clientY;
+        const touch = e.touches[0];
+        const dx = touch.clientX - lastMouseRef.current.x;
+        const dy = touch.clientY - lastMouseRef.current.y;
+        mouseVelocity.current = Math.min(Math.sqrt(dx * dx + dy * dy), 50);
+
+        lastMouseRef.current.x = touch.clientX;
+        lastMouseRef.current.y = touch.clientY;
+        mouseRef.current.x = touch.clientX;
+        mouseRef.current.y = touch.clientY;
       }
     };
 
@@ -201,18 +217,30 @@ export function ParticleCanvas() {
       const mx = mouseRef.current.x;
       const my = mouseRef.current.y;
 
+      // Mouse velocity-dependent force
+      mouseVelocity.current *= 0.95; // Decay velocity
+      const vel = mouseVelocity.current;
+      const attractionFactor = Math.min(vel / 5, 1); // Transition from repel to pull based on velocity
+      
       for (const leaf of leaves) {
         leaf.vy += 0.003;
         leaf.vx += (Math.random() - 0.5) * 0.01;
 
-        // Follow cursor
+        // Interaction with cursor
         const dx = mx - leaf.x;
         const dy = my - leaf.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
+        
         if (dist < CURSOR_RADIUS && dist > 0) {
-          const force = (CURSOR_RADIUS - dist) / CURSOR_RADIUS;
-          leaf.vx += (dx / dist) * force * CURSOR_FORCE;
-          leaf.vy += (dy / dist) * force * CURSOR_FORCE;
+          const forceFactor = (CURSOR_RADIUS - dist) / CURSOR_RADIUS;
+          
+          // If mouse is moving, pull. If stationary, push away (repel)
+          const pull = PULL_FORCE * attractionFactor;
+          const push = PUSH_FORCE * (1 - attractionFactor);
+          const totalForce = (pull - push) * forceFactor;
+
+          leaf.vx += (dx / dist) * totalForce;
+          leaf.vy += (dy / dist) * totalForce;
         }
 
         // Wind sway
@@ -231,8 +259,11 @@ export function ParticleCanvas() {
         leaf.y += leaf.vy;
         leaf.rotation += leaf.rotSpeed + leaf.vx * 0.04;
 
-        // Wrap around
-        if (leaf.y > h + 20) { leaf.y = -20; leaf.x = Math.random() * w * 0.5; }
+        // Wrap around with global distribution
+        if (leaf.y > h + 20) { 
+          leaf.y = -20; 
+          leaf.x = Math.random() * w; // Spread across full width on respawn
+        }
         if (leaf.x < -20) leaf.x = w + 20;
         if (leaf.x > w + 20) leaf.x = -20;
         if (leaf.y < -40) leaf.y = h + 20;
