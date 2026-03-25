@@ -37,19 +37,18 @@ export function Navbar() {
   return (
     <>
       <motion.nav
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           isScrolled ? "glass" : ""
         }`}
       >
         <div className="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
-          <a href="#" className="text-base font-bold tracking-tight text-text">
+          <a href="#" className="font-[var(--font-display)] text-xl tracking-tight text-text">
             SAH<span className="text-accent">.</span>
           </a>
 
-          {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-8">
             {navItems.map((item) => (
               <a
@@ -63,35 +62,36 @@ export function Navbar() {
             ))}
           </div>
 
-          {/* Mobile toggle */}
           <button
             onClick={() => setIsMobileOpen(!isMobileOpen)}
-            className="md:hidden flex flex-col gap-1.5 p-2"
+            className="md:hidden flex flex-col gap-1.5 p-2 btn-press"
             aria-label="Toggle menu"
           >
             <motion.span
-              animate={isMobileOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
+              animate={isMobileOpen ? { rotate: 45, y: 5 } : { rotate: 0, y: 0 }}
+              transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
               className="block w-5 h-px bg-text"
             />
             <motion.span
               animate={isMobileOpen ? { opacity: 0 } : { opacity: 1 }}
+              transition={{ duration: 0.15 }}
               className="block w-5 h-px bg-text"
             />
             <motion.span
-              animate={isMobileOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }}
+              animate={isMobileOpen ? { rotate: -45, y: -5 } : { rotate: 0, y: 0 }}
+              transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
               className="block w-5 h-px bg-text"
             />
           </button>
         </div>
 
-        {/* Mobile menu */}
         <AnimatePresence>
           {isMobileOpen && (
             <motion.div
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.3 }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
               className="md:hidden glass-strong overflow-hidden"
             >
               <div className="px-6 py-4 flex flex-col gap-4">
@@ -114,13 +114,13 @@ export function Navbar() {
         </AnimatePresence>
       </motion.nav>
 
-      {/* Easter Egg */}
       <AnimatePresence>
         {showEasterEgg && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.5, y: 50 }}
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.5, y: 50 }}
+            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
             className="fixed bottom-8 right-8 z-[100] bg-white rounded-2xl px-6 py-4 flex items-center gap-4 max-w-sm shadow-lg border border-border"
           >
             <span className="text-4xl animate-float">🤖</span>

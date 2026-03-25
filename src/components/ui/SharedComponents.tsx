@@ -11,17 +11,17 @@ interface SectionHeadingProps {
 export function SectionHeading({ title, subtitle }: SectionHeadingProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      className="mb-8"
+      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+      className="mb-12"
     >
-      <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-text">
+      <h2 className="font-[var(--font-display)] text-3xl md:text-4xl tracking-tight text-text">
         {title}<span className="text-accent">.</span>
       </h2>
       {subtitle && (
-        <p className="text-text-muted text-sm mt-2 max-w-lg font-light">{subtitle}</p>
+        <p className="text-text-muted text-sm mt-3 max-w-lg font-[var(--font-body)] font-light leading-relaxed">{subtitle}</p>
       )}
     </motion.div>
   );
@@ -57,9 +57,9 @@ interface GlowCardProps {
 export function GlowCard({ children, className = "" }: GlowCardProps) {
   return (
     <motion.div
-      whileHover={{ y: -2 }}
-      transition={{ duration: 0.3 }}
-      className={`rounded-xl border border-border bg-bg-card p-6 card-hover ${className}`}
+      whileHover={{ y: -3 }}
+      transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+      className={`rounded-2xl border border-border bg-bg-card p-6 card-hover ${className}`}
     >
       {children}
     </motion.div>
