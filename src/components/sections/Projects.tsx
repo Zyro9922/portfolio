@@ -16,39 +16,43 @@ export function Projects() {
         {projects.map((project, idx) => (
           <motion.div
             key={project.id}
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: idx * 0.1 }}
+            transition={{ duration: 0.6, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
+            className="group"
           >
-            <div className="group rounded-xl border border-border bg-bg-card p-6 transition-all duration-300 hover:shadow-sm hover:border-accent/20">
-              <h3 className="text-lg font-semibold mb-2 text-text group-hover:text-accent transition-colors">
+            <div className="rounded-2xl border border-border bg-bg-card p-7 transition-all duration-300 hover:shadow-lg hover:border-accent/20 hover:-translate-y-0.5">
+              <h3 className="font-[var(--font-display)] text-xl mb-2.5 text-text group-hover:text-accent transition-colors duration-300">
                 {project.title}
               </h3>
-              <p className="text-sm text-text-muted leading-relaxed mb-4 font-light">
+              <p className="text-sm text-text-muted leading-relaxed mb-5 font-[var(--font-body)] font-light">
                 {project.description}
               </p>
 
-              <div className="flex flex-wrap gap-1.5 mb-5">
+              <div className="flex flex-wrap gap-2 mb-6">
                 {project.tech.map((t) => (
                   <span
                     key={t}
-                    className="text-[11px] px-2 py-0.5 rounded-full border border-border text-text-dim font-light"
+                    className="tag px-2.5 py-1 rounded-full border border-border text-text-dim font-[var(--font-mono)] transition-colors duration-300 group-hover:border-accent/30 group-hover:text-accent/70"
                   >
                     {t}
                   </span>
                 ))}
               </div>
 
-              <div className="flex gap-4">
+              <div className="flex gap-5">
                 {project.github && (
                   <a
                     href={project.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-xs text-text-muted hover:text-accent transition-colors flex items-center gap-1.5 font-medium"
+                    className="btn-press inline-flex items-center gap-1.5 text-xs text-text-muted hover:text-accent transition-colors duration-200 font-medium"
                   >
-                    GitHub →
+                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                    GitHub
                   </a>
                 )}
                 {project.playStore && (
@@ -56,9 +60,12 @@ export function Projects() {
                     href={project.playStore}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-xs text-text-muted hover:text-accent transition-colors flex items-center gap-1.5 font-medium"
+                    className="btn-press inline-flex items-center gap-1.5 text-xs text-text-muted hover:text-accent transition-colors duration-200 font-medium"
                   >
-                    Play Store →
+                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                    Play Store
                   </a>
                 )}
               </div>
