@@ -25,9 +25,9 @@ const iconMap: Record<string, React.ReactNode> = {
 
 export function Footer() {
   return (
-    <footer className="border-t border-border py-10 px-6">
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-        <p className="text-xs text-text-dim">
+    <footer className="border-t border-border py-12 px-6">
+      <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+        <p className="text-xs text-text-dim font-[var(--font-body)]">
           © {new Date().getFullYear()} Syed Ali Hasan
         </p>
         <div className="flex items-center gap-5">
@@ -37,7 +37,7 @@ export function Footer() {
               href={link.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-text-dim hover:text-accent transition-colors duration-300"
+              className="text-text-dim hover:text-accent transition-colors duration-200"
               aria-label={link.name}
             >
               {iconMap[link.icon]}
