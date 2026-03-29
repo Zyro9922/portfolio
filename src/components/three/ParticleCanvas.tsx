@@ -234,13 +234,21 @@ export function ParticleCanvas() {
         if (dist < CURSOR_RADIUS && dist > 0) {
           const forceFactor = (CURSOR_RADIUS - dist) / CURSOR_RADIUS;
           
-          // If mouse is moving, pull. If stationary, push away (repel)
-          const pull = PULL_FORCE * attractionFactor;
+          // Smoothly limit the pull as they get closer to the very center, preventing a dead stop.
+          const distanceLimiter = Math.min(dist / 50, 1);
+          
+          const pull = PULL_FORCE * attractionFactor * distanceLimiter;
           const push = PUSH_FORCE * (1 - attractionFactor);
           const totalForce = (pull - push) * forceFactor;
 
+          // Radial pull/push
           leaf.vx += (dx / dist) * totalForce;
           leaf.vy += (dy / dist) * totalForce;
+
+          // Organic swirl: Add a tangential force so they orbit the cursor instead of crashing into it
+          const swirl = 0.15 * forceFactor * attractionFactor;
+          leaf.vx += (-dy / dist) * swirl;
+          leaf.vy += (dx / dist) * swirl;
         }
 
         // Wind sway
