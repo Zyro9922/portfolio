@@ -5,9 +5,9 @@ import { useEffect, useRef } from "react";
 
 const LEAF_COUNT_DESKTOP = 60;
 const LEAF_COUNT_MOBILE = 20;
-const CURSOR_RADIUS = 280;
-const PULL_FORCE = 0.12;
-const PUSH_FORCE = 0.02; // Reduced from 0.08 for a more subtle effect
+const CURSOR_RADIUS = 350; // Increased for a wider attraction net
+const PULL_FORCE = 0.30;   // Increased to make the pull much stronger when moving
+const PUSH_FORCE = 0.02;   // Keeps the subtle repulsion when stationary
 
 interface Leaf {
   x: number;
