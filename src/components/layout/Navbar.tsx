@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
 
 const navItems = [
   { label: "Blogs", href: "/blog" },
@@ -45,20 +46,20 @@ export function Navbar() {
         }`}
       >
         <div className="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
-          <a href="#" className="font-[var(--font-display)] text-xl tracking-tight text-text">
+          <Link href="/" className="font-[var(--font-display)] text-xl tracking-tight text-text">
             SAH<span className="text-accent">.</span>
-          </a>
+          </Link>
 
           <div className="hidden md:flex items-center gap-8">
             {navItems.map((item) => (
-              <a
+              <Link
                 key={item.label}
                 href={item.href}
                 className="nav-link"
                 onClick={item.label === "Blogs" ? handleBlogClick : undefined}
               >
                 {item.label}
-              </a>
+              </Link>
             ))}
           </div>
 
@@ -96,7 +97,7 @@ export function Navbar() {
             >
               <div className="px-6 py-4 flex flex-col gap-4">
                 {navItems.map((item) => (
-                  <a
+                  <Link
                     key={item.label}
                     href={item.href}
                     className="nav-link"
@@ -106,7 +107,7 @@ export function Navbar() {
                     }}
                   >
                     {item.label}
-                  </a>
+                  </Link>
                 ))}
               </div>
             </motion.div>
