@@ -3,6 +3,7 @@ import { Instrument_Serif, Outfit, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { LikeButton } from "@/components/ui/LikeButton";
 
 const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
@@ -56,6 +57,7 @@ export default function RootLayout({
         <Navbar />
         <main>{children}</main>
         <Footer />
+        <LikeButton />
       </body>
     </html>
   );
