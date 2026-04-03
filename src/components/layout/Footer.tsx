@@ -1,4 +1,5 @@
 import { socialLinks } from "@/data/social";
+import { FooterLikes } from "@/components/ui/FooterLikes";
 
 const iconMap: Record<string, React.ReactNode> = {
   github: (
@@ -43,6 +44,10 @@ export function Footer() {
               {iconMap[link.icon]}
             </a>
           ))}
+          
+          <div className="w-[1px] h-4 bg-border hidden md:block"></div>
+          
+          <FooterLikes />
         </div>
       </div>
     </footer>

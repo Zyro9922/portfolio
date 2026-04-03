@@ -96,7 +96,7 @@ export function Contact() {
             <div>
               <h3 className="text-[11px] text-text-dim uppercase tracking-widest mb-2 font-[var(--font-mono)]">Schedule</h3>
               <a
-                href="https://calendly.com"
+                href="https://calendly.com/alihasan9922/30min"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 text-sm text-text-muted hover:text-accent transition-colors duration-200 font-[var(--font-body)] font-light"
