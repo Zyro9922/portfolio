@@ -8,12 +8,34 @@ import { AnimatedSection, SectionHeading } from "@/components/ui/SharedComponent
 export function Contact() {
   const [formState, setFormState] = useState({ name: "", email: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 4000);
-    setFormState({ name: "", email: "", message: "" });
+    if (!formState.name || !formState.email || !formState.message) return;
+    
+    setSubmitting(true);
+    
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formState),
+      });
+
+      if (res.ok) {
+        setSubmitted(true);
+        setTimeout(() => setSubmitted(false), 4000);
+        setFormState({ name: "", email: "", message: "" });
+      } else {
+        alert("Failed to send message. Please try again.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Failed to send message. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -66,11 +88,14 @@ export function Contact() {
             </div>
             <motion.button
               type="submit"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="px-7 py-3 rounded-full bg-accent text-white font-medium text-sm hover:bg-accent-mid transition-colors duration-200 font-[var(--font-body)]"
+              disabled={submitting || submitted}
+              whileHover={!(submitting || submitted) ? { scale: 1.02 } : {}}
+              whileTap={!(submitting || submitted) ? { scale: 0.98 } : {}}
+              className={`px-7 py-3 rounded-full text-white font-medium text-sm transition-colors duration-200 font-[var(--font-body)] ${
+                submitting || submitted ? 'bg-accent/70 cursor-not-allowed' : 'bg-accent hover:bg-accent-mid'
+              }`}
             >
-              {submitted ? "✓ Sent!" : "Send Message"}
+              {submitting ? "Sending..." : submitted ? "✓ Sent!" : "Send Message"}
             </motion.button>
           </form>
         </motion.div>
